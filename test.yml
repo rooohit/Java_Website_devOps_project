@@ -8,11 +8,11 @@
     - name: creating a same key pair
       ec2_key:
         - name: testkey
-          region: {{ REGION }}
+          region: {{REGION}}
       register: keyout
 
     - name: Storing the key in local machin
       copy: 
-        content: "keyout.key.private_key"
+        content: "{{keyout.key.private_key}}"
         dest: ./testkey.pem
       when: keyout.changed
