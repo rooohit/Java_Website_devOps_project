@@ -7,8 +7,8 @@
 
     - name: creating a same key pair
       ec2_key:
-        - name: testkey
-          region: us-east-2
+        name: testkey
+        region: us-east-2
       register: keyout
 
     - name: Storing the key in local machin
