@@ -8,7 +8,7 @@
     - name: creating a same key pair
       ec2_key:
         - name: testkey
-          region: { { REGION }}
+          region: {{ REGION }}
       register: keyout
 
     - name: Storing the key in local machin
