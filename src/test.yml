@@ -1,0 +1,18 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: including Variable file
+      include_vars: vars/variables
+
+    - name: creating a same key pair
+      ec2_key:
+        - name: testkey
+          region: {{REGION}}
+      register: keyout
+
+    - name: Storing the key in local machin
+      copy: 
+        content: "keyout.key.private_key"
+        dest: ./testkey.pem
+      when: keyout.changed
