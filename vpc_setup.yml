@@ -7,7 +7,7 @@
 
     - name: Creating VPC for our web Web_stack_vpc
       ec2_vpc_net:
-        name: "{{Web_stack_vpc}}"
+        name: "{{vpc_name}}"
         cidr_block: "{{VpcCidr}}"
         region: "{{REGION}}"
         dns_support: yes
