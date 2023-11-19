@@ -1,0 +1,58 @@
+- name: setup Bastion host
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Import Bastion vars
+      include_vars: vars/bastion_vars
+
+    - name: Import all the ids file the we stored in vpc setup file
+      include_vars: vars/output_vars
+
+    - name: create a key pair for bastion host
+      ec2_key:
+        name: webstack_key
+        region: "{{REGION}}"
+      register: Key_out
+    
+    - name: storing the key pair pair
+      copy:
+        content: "{{Key_out.key.private_key}}"
+        dest: "./bastion_host_key.pem"
+        mode: 0600
+      when: Key_out.changed
+
+    - name: Create Security Group for Bastion host
+      ec2_group:
+        name: bastion-host-sg
+        description: Allow port 22 from MYIP and all port with sg
+        region: "{{region}}"
+        vpc_id: "{{vpcid}}"
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: "{{MYIP}}"
+      register: BastionSG_out
+
+    - name: Creating Bastion host
+      ec2:
+        key_name:  webstack_key
+        region: "{{region}}"
+        instance_type: t2.micro
+        image: "{{bastion_ami}}"
+        wait: yes
+        wait_timeout: 300
+        instance_tags
+          Name: "Bastion_host"
+          Project: "webstack_project"
+          Owner: "DevOps_team"
+        exact_count: 1
+        count_tag:
+          Name: "Bastion_host"
+          Project: "webstack_project"
+          Owner: "DevOps_team"
+        group_id: "{{BastionSG_out.group_id}}"
+        vpc_subnet_id: "{{pubsub1id}}"
+      register: bastionHost_out
+    
