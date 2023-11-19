@@ -130,7 +130,7 @@
         routes:
           - dest: 0.0.0.0/0
             gateway_id: "{{NATGW_out.nat_gateway_id}}"
-        register: PrivRT_out
+      register: PrivRT_out
     - debug: 
         var: "{{item}}"
       loop:
