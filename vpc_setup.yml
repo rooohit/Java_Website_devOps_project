@@ -1,5 +1,5 @@
 - hosts: localhost
-  connecttion: local
+  connection: local
   gather_facts: False
   tasks:
     - name: Import variable file
