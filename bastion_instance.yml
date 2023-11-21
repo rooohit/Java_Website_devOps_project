@@ -43,7 +43,7 @@
         image: "{{bastion_ami}}"
         wait: yes
         wait_timeout: 300
-        instance_tags
+        instance_tags:
           Name: "Bastion_host"
           Project: "webstack_project"
           Owner: "DevOps_team"
